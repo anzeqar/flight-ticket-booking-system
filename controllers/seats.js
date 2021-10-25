@@ -112,7 +112,7 @@ exports.updateBooking = async (req, res, next) => {
     const now = new Date();
     if (Number(now.getTime()) - Number(formatDateMs) < 86400000) {
       return res.status(400).json({
-        err: "Only Update after 24 hours",
+        err: "Update Seats only after 24 hours",
       });
     }
     // Comment Above to update within 24 hours

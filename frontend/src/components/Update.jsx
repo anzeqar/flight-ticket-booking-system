@@ -43,7 +43,7 @@ const Book = () => {
           }, 100);
         })
         .catch((err) => {
-          alert("500: Internal Server Error");
+          alert(err.response.data.err);
         });
     }
   };
