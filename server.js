@@ -8,6 +8,7 @@ const app = express();
 const connectDB = require("./config/connectDB");
 const router = require("./routes/seats");
 const Seats = require("./models/Seats");
+const path = require("path");
 
 /**
  * @description Connect Database
@@ -22,9 +23,7 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/**
- * @description Run Once at Start Time to Create Seats DB
- */
+// Uncomment Only Once To Create New Seats DB
 // for (let i = 65; i <= 70; i++) {
 //   for (let j = 1; j <= 30; j++) {
 //     if (j < 10) j = "0" + j;
@@ -39,6 +38,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/", router);
 
 /**
+ * @description Loads REACT FRONTEND
+ */
+app.use(express.static("build"));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
+
+/**
  * @description Runs on PORT 5000
  */
-app.listen(5000);
+app.listen(process.env.PORT || 5000);
