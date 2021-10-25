@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Seats Schema
 const SeatsSchema = new mongoose.Schema({
   number: { type: String },
   modifiedAt: { type: Date },

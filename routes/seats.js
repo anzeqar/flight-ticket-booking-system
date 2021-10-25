@@ -12,6 +12,10 @@ const {
 
 const router = express.Router();
 
+/**
+ * @method GET,POST,PUT
+ * @description Connect Routes from Controller
+ */
 router.route("/seats").get(getSeats);
 router.route("/book").post(bookSeat).put(updateSeat);
 router.route("/bookings").get(displayBookings).post(toggleArrived);

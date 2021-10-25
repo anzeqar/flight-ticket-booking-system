@@ -1,6 +1,7 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "flight-ticket-booking-system",
+  "version": "1.0.0",
+  "author": "anzeqar",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",

@@ -29,16 +29,15 @@ const Book = () => {
     };
 
     if (data.mobile <= 1000000000) {
-      alert("Mobile number less than 10 digits");
+      alert("Error: Mobile number Less than 10 digits");
     } else if (data.mobile > 999999999999) {
-      alert("Mobile number greater than 12 digits");
+      alert("Error: Mobile number Greater than 12 digits");
     } else if (data.seats.length <= 0) {
-      alert("Please Select Some Seats");
+      alert("Error: Please Select Some Seats");
     } else {
       axios
         .post("/api/book", data, header)
         .then((data) => {
-          console.log(data);
           const booking = {
             bookingId: data.data.data._id,
             date: data.data.data.date,
@@ -63,7 +62,7 @@ const Book = () => {
             e.target[0].value = "";
             e.target[1].value = "";
             alert(
-              `Booking ID: ${bookingId}\nDate: ${
+              `Successfully Booked\nBooking ID: ${bookingId}\nDate: ${
                 year + "-" + month + "-" + dt
               }\nMobile: ${mobile}\nSeats: ${seats}`
             );
@@ -80,15 +79,18 @@ const Book = () => {
   return (
     <div className="">
       <header>
-        <h1 className="mb-4 mt-2 text-center">New Booking</h1>
+        <h1 className="mb-4 mt-4 mb-2 text-center">
+          Book Seats IndiGo {`(BOM => DEL)`}
+        </h1>
       </header>
-      <div className="text-center d-flex justify-content-center">
+      <div className="text-center container mt-4">
         <form method="post" className="d-flex flex-column" onSubmit={book}>
           <input
             type="text"
             name="name"
+            className="form-control mb-2"
             id="name"
-            placeholder="Name"
+            placeholder="Enter Your Name"
             minLength="3"
             required={true}
           />
@@ -96,16 +98,22 @@ const Book = () => {
           <input
             type="number"
             name="mobile"
+            className="form-control mb-2"
             id="mobile"
-            placeholder="Mobile"
+            placeholder="Enter Your Mobile"
             required={true}
           />
-          <input type="submit" value="submit" />
+          <input type="submit" className="btn btn-primary" value="Book Seats" />
         </form>
       </div>
 
-      <div className="container ">
-        <div className="container row row-cols-6 d-flex justify-content-center ">
+      <div className=" container flight-map rounded ">
+        <div className="d-flex justify-content-center">
+          <span className="h3 text-secondary text-center mt-2 mb-4">
+            IndiGo Seats {`(BOM => DEL)`}
+          </span>
+        </div>
+        <div className="container row row-cols-6 d-flex justify-content-center  ">
           {seats.map((seat) => {
             return (
               <div className="col" key={seat.number}>
@@ -115,7 +123,7 @@ const Book = () => {
                   }`}
                   onClick={(event) => {
                     if (seat.isBooked) {
-                      alert("Reserved Seat");
+                      alert("Warning: Reserved Seat");
                     } else {
                       let targetElement = event.target || event.srcElement;
                       if (seat.isSelected) {
@@ -140,7 +148,7 @@ const Book = () => {
                       }
 
                       if (selectedSeats.length >= 6) {
-                        alert("Booking limit exceeded");
+                        alert("Warning: Only 6 seats in One Booking");
                       }
                     }
                   }}

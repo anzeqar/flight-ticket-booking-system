@@ -31,11 +31,16 @@ const Bookings = () => {
   return (
     <div className="container">
       <header>
-        <h1 className="mb-4 mt-2 text-center">All Bookings in Sequence</h1>
+        <h1 className="mb-4 mt-4 text-center">
+          Bookings For IndiGo {`(BOM => DEL)`}
+        </h1>
       </header>
-      <table className="table table-striped">
+      <div className="m-2">
+        <div className="p-2"></div>
+      </div>
+      <table className="table table-striped table-hover">
         <thead>
-          <tr>
+          <tr className="text-center">
             <th scope="col">Seq.</th>
             <th scope="col">Name</th>
             <th scope="col">Booking Id</th>
@@ -46,7 +51,7 @@ const Bookings = () => {
         </thead>
         <tbody>
           {bookings.map((booking, index) => (
-            <tr key={booking._id}>
+            <tr key={booking._id} className="text-center">
               <td>{index + 1}</td>
               <td>{booking.name}</td>
               <td>{booking._id}</td>
@@ -56,7 +61,10 @@ const Bookings = () => {
                 ))}
               </td>
               <td>
-                <a href={`tel:${booking.mobile}`} className="btn btn-success">
+                <a
+                  href={`tel:${booking.mobile}`}
+                  className="btn btn-success w-75"
+                >
                   {booking.mobile}
                 </a>
               </td>
@@ -69,7 +77,15 @@ const Bookings = () => {
                     value={Boolean(booking.isArrived)}
                   />
 
-                  <button className="btn btn-primary" type="sumbit">
+                  <button
+                    className={
+                      `btn` && booking.isArrived
+                        ? " btn btn-primary w-100"
+                        : " btn btn-danger w-100"
+                    }
+                    style={{ textTransform: "capitalize" }}
+                    type="sumbit"
+                  >
                     {String(booking.isArrived)}
                   </button>
                 </form>

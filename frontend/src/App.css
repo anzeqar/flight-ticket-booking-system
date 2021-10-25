@@ -1,0 +1,18 @@
+.bg-landing {
+  background: url("./assets/bg.jpeg") center;
+}
+
+.overlay-bg {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.flight-map {
+  margin-top: 3rem;
+  border-radius: 5px;
+  border: 2px solid gray;
+  padding-bottom: 2rem;
+}

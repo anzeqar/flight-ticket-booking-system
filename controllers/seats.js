@@ -1,6 +1,10 @@
 const Seats = require("../models/Seats");
 const Bookings = require("../models/Bookings");
-const moment = require("moment");
+
+/**
+ * @method GET
+ * @description Fetch All Seats
+ */
 
 exports.getSeats = async (req, res, next) => {
   try {
@@ -12,6 +16,11 @@ exports.getSeats = async (req, res, next) => {
     });
   }
 };
+
+/**
+ * @method POST
+ * @description Book Selected Seats on Bookings Schema
+ */
 
 exports.bookSeat = async (req, res, next) => {
   try {
@@ -46,6 +55,10 @@ exports.bookSeat = async (req, res, next) => {
   }
 };
 
+/**
+ * @method PUT
+ * @description Update on Seats Schema
+ */
 exports.updateSeat = async (req, res, next) => {
   try {
     const { bookingId, seats, date, mobile } = req.body;
@@ -78,6 +91,10 @@ exports.updateSeat = async (req, res, next) => {
   }
 };
 
+/**
+ * @method PUT
+ * @description Update Seats Bookings
+ */
 exports.updateBooking = async (req, res, next) => {
   try {
     const { bookingId, seats } = req.body;
@@ -89,21 +106,22 @@ exports.updateBooking = async (req, res, next) => {
     const findById = await Bookings.findById(bookingId);
     const prevSeats = findById.seats;
 
-    // const prevDate = findById.date;
-    // const formatDateMs = Date.parse(prevDate);
-    // const now = new Date();
-    // if (Number(now.getTime()) - Number(formatDateMs) < 86400000) {
-    //   return res.status(400).json({
-    //     err: "Only Update after 24 hours",
-    //   });
-    // }
+    // Comment below to update within 24 hours
+    const prevDate = findById.date;
+    const formatDateMs = Date.parse(prevDate);
+    const now = new Date();
+    if (Number(now.getTime()) - Number(formatDateMs) < 86400000) {
+      return res.status(400).json({
+        err: "Only Update after 24 hours",
+      });
+    }
+    // Comment Above to update within 24 hours
 
     const newSeats = prevSeats.concat(seats);
     const seatNumbers = [];
     newSeats.forEach((seat) => {
       seatNumbers.push(Number(seat.slice(0, 2)));
     });
-    console.log(seatNumbers);
     const hS = Math.max(...seatNumbers);
     const updatedSeat = await Bookings.findByIdAndUpdate(
       bookingId,
@@ -134,6 +152,10 @@ exports.updateBooking = async (req, res, next) => {
   }
 };
 
+/**
+ * @method GET
+ * @description Displays All Bookings
+ */
 exports.displayBookings = async (req, res, next) => {
   try {
     const allBookings = await Bookings.find().sort({ hS: "descending" });
@@ -147,6 +169,10 @@ exports.displayBookings = async (req, res, next) => {
   }
 };
 
+/**
+ * @method POST
+ * @description Toggle Arrival Status
+ */
 exports.toggleArrived = async (req, res, next) => {
   try {
     const { bookingId, isArrived } = req.body;
@@ -171,15 +197,17 @@ exports.toggleArrived = async (req, res, next) => {
   }
 };
 
+/**
+ * @method POST
+ * @description Shows All Seats By Booking Id
+ */
 exports.showEditSeats = async (req, res, next) => {
   try {
     const { bookingId } = req.body;
-    console.log("show edit seats");
 
     const data = await Seats.find({ bookingId: bookingId }).sort({
       number: "ascending",
     });
-    console.log(data);
 
     if (data.length === 0) {
       return res.status(404).json({
@@ -194,20 +222,20 @@ exports.showEditSeats = async (req, res, next) => {
   }
 };
 
+/**
+ * @method PUT
+ * @description Removes Unselected Seats
+ */
 exports.editSeats = async (req, res, next) => {
   try {
     const { bookingId, seats } = req.body;
-    console.log(bookingId, seats);
     const oldseats = await Seats.find({ bookingId: bookingId });
     const oldSeats = oldseats.map((seat) => seat.number);
-    console.log(oldSeats);
     const seatNumbers = [];
     seats.forEach((seat) => {
       seatNumbers.push(Number(seat.slice(0, 2)));
     });
-    console.log(seatNumbers);
     const hS = Math.max(...seatNumbers);
-    console.log(hS);
     const seatsUpdateOnBookings = await Bookings.findByIdAndUpdate(
       bookingId,
       { $set: { seats: seats, hS: hS, date: Date.now() } },
@@ -216,7 +244,6 @@ exports.editSeats = async (req, res, next) => {
 
     oldSeats.forEach(async (seat) => {
       if (!seats.includes(seat)) {
-        console.log(seat);
         await Seats.findOneAndUpdate(
           { number: seat },
           {
@@ -234,11 +261,8 @@ exports.editSeats = async (req, res, next) => {
     const returnNewSeats = await Seats.find({ bookingId: bookingId }).sort({
       number: "ascending",
     });
-    console.log(returnNewSeats);
     return res.status(200).json({ data: returnNewSeats });
   } catch (err) {
-    console.log(err);
-
     return res.status(500).json({
       err: err,
     });

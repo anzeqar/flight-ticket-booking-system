@@ -28,14 +28,14 @@ const Book = () => {
       },
     };
     if (data.bookingId.length !== 24) {
-      alert("Booking ID Invalid");
+      alert("Error: Booking ID Invalid");
     } else if (data.seats.length <= 0) {
-      alert("Please select some seats");
+      alert("Error: Please select some seats");
     } else {
       axios
         .put("/api/update", data, header)
         .then((data) => {
-          alert("All Seats Updated Successfully");
+          alert("Success: Seats Updated Successfully");
           fetchSeats();
           e.target[0].value = "";
           setTimeout(() => {
@@ -50,21 +50,33 @@ const Book = () => {
   return (
     <div className="">
       <header>
-        <h1 className="mb-4 mt-2 text-center">Update Booking</h1>
+        <h1 className="mb-4 mt-4 text-center">
+          Update Seats IndiGo {`(BOM => DEL)`}
+        </h1>
       </header>
-      <div className="text-center d-flex justify-content-center">
-        <form method="post" onSubmit={book}>
+      <div className="text-center container mt-2">
+        <form method="post" className="d-flex flex-column" onSubmit={book}>
           <input
             type="text"
+            className="form-control mb-2"
             name="bookingId"
             id="bookingId"
             placeholder="Booking Id"
           />
-          <input type="submit" value="submit" />
+          <input
+            type="submit"
+            value="Update Seats"
+            className="btn btn-primary"
+          />
         </form>
       </div>
 
-      <div className="container">
+      <div className="container flight-map">
+        <div className="d-flex justify-content-center">
+          <span className="h3 text-secondary text-center mt-2 mb-4">
+            IndiGo Seats {`(BOM => DEL)`}
+          </span>
+        </div>
         <div className="container row row-cols-6 d-flex justify-content-center ">
           {seats.map((seat) => {
             return (
@@ -76,7 +88,7 @@ const Book = () => {
                   }`}
                   onClick={(event) => {
                     if (seat.isBooked) {
-                      alert("Reserved Seat");
+                      alert("Warning: Reserved Seat");
                     } else {
                       let targetElement = event.target || event.srcElement;
                       if (seat.isSelected) {
@@ -101,7 +113,7 @@ const Book = () => {
                       }
 
                       if (selectedSeats.length >= 6) {
-                        alert("Booking limit exceeded");
+                        alert("Warning: Only 6 seats in One Booking");
                       }
                     }
                   }}
