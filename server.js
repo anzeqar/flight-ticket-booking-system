@@ -24,13 +24,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Uncomment Only Once To Create New Seats DB
-// for (let i = 65; i <= 70; i++) {
-//   for (let j = 1; j <= 30; j++) {
-//     if (j < 10) j = "0" + j;
-//     let val = j + String.fromCharCode(i);
-//     Seats.create({ number: val });
-//   }
-// }
+for (let i = 65; i <= 70; i++) {
+  for (let j = 1; j <= 30; j++) {
+    if (j < 10) j = "0" + j;
+    let val = j + String.fromCharCode(i);
+    Seats.create({ number: val });
+  }
+}
 
 /**
  * @description Link Router
