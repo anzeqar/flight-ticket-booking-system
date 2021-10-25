@@ -72,7 +72,7 @@ const Book = () => {
           }, 100);
         })
         .catch((err) => {
-          alert(err.response.data.err);
+          alert("500: Internal Server Error");
         });
     }
   };
@@ -106,58 +106,60 @@ const Book = () => {
           <input type="submit" className="btn btn-primary" value="Book Seats" />
         </form>
       </div>
+      <div className="container">
+        <div className=" container flight-map rounded ">
+          <div className="d-flex justify-content-center">
+            <span className="h3 text-secondary text-center mt-2 mb-4">
+              IndiGo Seats {`(BOM => DEL)`}
+            </span>
+          </div>
 
-      <div className=" container flight-map rounded ">
-        <div className="d-flex justify-content-center">
-          <span className="h3 text-secondary text-center mt-2 mb-4">
-            IndiGo Seats {`(BOM => DEL)`}
-          </span>
-        </div>
-        <div className="container row row-cols-6 d-flex justify-content-center  ">
-          {seats.map((seat) => {
-            return (
-              <div className="col" key={seat.number}>
-                <div
-                  className={` btn d-flex justify-content-center mt-1 mb-1 text-center ${
-                    seat.isBooked ? "btn-secondary" : "btn-primary"
-                  }`}
-                  onClick={(event) => {
-                    if (seat.isBooked) {
-                      alert("Warning: Reserved Seat");
-                    } else {
-                      let targetElement = event.target || event.srcElement;
-                      if (seat.isSelected) {
-                        seat.isSelected = false;
-                        targetElement.classList.add("btn-primary");
-                        targetElement.classList.remove("btn-success");
-                        const index = selectedSeats.indexOf(seat.number);
-                        if (index > -1) {
-                          selectedSeats.splice(index, 1);
-                        }
+          <div className="container row row-cols-6 d-flex justify-content-center  ">
+            {seats.map((seat, index) => {
+              return (
+                <div className="col" key={index}>
+                  <div
+                    className={` btn d-flex justify-content-center p-3 mt-1 mb-1 text-center ${
+                      seat.isBooked ? "btn-secondary" : "btn-primary"
+                    }`}
+                    onClick={(event) => {
+                      if (seat.isBooked) {
+                        alert("Warning: Reserved Seat");
                       } else {
-                        seat.isSelected = true;
+                        let targetElement = event.target || event.srcElement;
+                        if (seat.isSelected) {
+                          seat.isSelected = false;
+                          targetElement.classList.add("btn-primary");
+                          targetElement.classList.remove("btn-success");
+                          const index = selectedSeats.indexOf(seat.number);
+                          if (index > -1) {
+                            selectedSeats.splice(index, 1);
+                          }
+                        } else {
+                          seat.isSelected = true;
 
-                        targetElement.classList.add("btn-success");
-                        targetElement.classList.remove("btn-primary");
-                        if (
-                          !selectedSeats.includes(seat.number) &&
-                          selectedSeats.length < 6
-                        ) {
-                          selectedSeats.push(seat.number);
+                          targetElement.classList.add("btn-success");
+                          targetElement.classList.remove("btn-primary");
+                          if (
+                            !selectedSeats.includes(seat.number) &&
+                            selectedSeats.length < 6
+                          ) {
+                            selectedSeats.push(seat.number);
+                          }
+                        }
+
+                        if (selectedSeats.length >= 6) {
+                          alert("Warning: Only 6 seats in One Booking");
                         }
                       }
-
-                      if (selectedSeats.length >= 6) {
-                        alert("Warning: Only 6 seats in One Booking");
-                      }
-                    }
-                  }}
-                >
-                  {seat.number}
+                    }}
+                  >
+                    {seat.number}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

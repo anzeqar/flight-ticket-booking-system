@@ -31,7 +31,7 @@ const Book = () => {
         .catch((err) => {
           getEditSeats([]);
           setDisplay("d-none");
-          alert(err.response.data.err);
+          alert("No Such Booking ID");
         });
     }
   };
@@ -90,7 +90,8 @@ const Book = () => {
           <input type="submit" className="btn btn-primary" value="Get Seats" />
         </form>
       </div>
-      <div className={`${display}`}>
+
+      <div className={`${display} container`}>
         <div className="container flight-map">
           <div className="d-flex flex-column">
             <span className="h3 text-secondary text-center mt-2 mb-1">
@@ -114,7 +115,7 @@ const Book = () => {
               return (
                 <div className="col" key={seat.number}>
                   <div
-                    className={` btn d-flex justify-content-center mt-1 mb-1 text-center btn-primary`}
+                    className={` btn d-flex justify-content-center mt-1 mb-1 p-3 text-center btn-primary`}
                     onClick={(event) => {
                       let targetElement = event.target || event.srcElement;
                       if (seat.isSelected) {
